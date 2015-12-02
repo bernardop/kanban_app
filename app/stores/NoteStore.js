@@ -9,7 +9,8 @@ class NoteStore {
         this.notes = [];
 
         this.exportPublicMethods({
-            get: this.get.bind(this)
+            get: this.get.bind(this),
+            deleteMany: this.deleteMany.bind(this)
         });
     }
 
@@ -47,6 +48,12 @@ class NoteStore {
         this.setState({
             notes: [...notes.slice(0, noteIndex), ...notes.slice(noteIndex + 1)]
         });
+    }
+
+    deleteMany(ids = []) {
+        for (let id of ids) {
+            this.delete(id);
+        }
     }
 
     findNote(id) {

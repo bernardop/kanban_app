@@ -21,6 +21,34 @@ class LaneStore {
         });
     }
 
+    update({id, name}) {
+        const lanes = this.lanes;
+        const targetId = this.findLane(id);
+
+        if (targetId < 0) {
+            return;
+        }
+
+        lanes[targetId].name = name;
+
+        this.setState({lanes});
+    }
+
+    delete(id) {
+        const lanes = this.lanes;
+        const targetId = this.findLane(id);
+
+        if (targetId < 0) {
+            return;
+        }
+
+        NoteStore.deleteMany(lanes[targetId].notes);
+
+        this.setState({
+            lanes: [...lanes.slice(0, targetId), ...lanes.slice(targetId + 1)]
+        });
+    }
+
     attachToLane({laneId, noteId}) {
         if (!noteId) {
             this.waitFor(NoteStore);
